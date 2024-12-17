@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>410'TH</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      position: absolute;
+      top: 20px;
+      text-align: center;
+      font-size: 3em;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+    }
+    .tablet {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .tablet h2 {
+      margin-top: 0;
+    }
+    .categories {
+      margin-top: 20px;
+    }
+    .category {
+      margin-bottom: 20px;
+    }
+    .category h3 {
+      margin: 0 0 10px 0;
+    }
+    .category button {
+      margin: 5px;
+    }
+    .message-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      width: 90%;
+      max-width: 400px;
+    }
+    .message-popup textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+      background-color: #222;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .message-popup button {
+      width: 48%;
+      margin: 1%;
+    }
+  </style>
+</head>
+<body>
+  <h1>410'TH</h1>
+  <button id="openTablet">MessageCustom</button>
+
+  <div class="tablet" id="tablet">
+    <h2>410'TH - Catégories</h2>
+    <div class="categories">
+      <div class="category">
+        <h3>410'TH Recrutement</h3>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316611103077171372/-cs5xFkREYxQfpZGWkUUz3nxnwMeqriMdn9hsEH9RUzA9iEOmUoMCP4UpEs9nR13T-h7')">Information</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316615609051648052/iv0VB1Npb7F98xoNZuHgWJHQ4G4DMRd7Bswuz9hXmiPHfAOSW5tAbczZw5qKcvnkWUmB')">Annonce RC</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318340792959369216/pSp4dLhdtqfdkND5wp5tbKVkc4Bb9esnnMiGtO5Ekee2HEEOV7wS4Z1C6TnIn96lq98b')">Dossier</button>
+      </div>
+      <div class="category">
+        <h3>410'TH Privée</h3>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318340950845821029/UXpe56c4Ur5mdKFtQiWlWSNoH1lVfiIKvO3aahPgZHcN7j_oXdexl8RicQNH_slLK8AX')">Annonce 410</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316755580387590144/pbz-wPn-ab9y7X2ef2_UgGMdWnnelvdMYbQi-lhKXxQP0nIEWAqobo-2cGm2q7zEEjKU')">Présence</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341148812640387/Mqt0fdJd2LCBGo9r6p2x29_BOAryusk9t0Wv7AdMv_murhlboLOn5W3tWtZDlNkvt2a1')">Warning</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341291523702824/LrFJ5U5yzLnobvemSDuulLe0fiau60VG8lfsfLVhPVFd5pqRLzAsqwaTd7KRpkxGFj1m')">Media 410</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341414131859537/D20ETWhiudidycU4H3P31TU2RNAD8fNkec5pJp14MhsmMCp2b9Rq27QreXtAa6K4YwNu')">Discu 410</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316619622098931732/_UTyJl-YovYFDGuIAxRmJIrzX2odxduaBNS52AalGYWLrrFxWHDo5qbmmJiqi6xMrHNZ')">Radio 410</button>
+      </div>
+      <div class="category">
+        <h3>410'TH Privée 2</h3>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316756948988989540/0Afg5nc1oG1RjxCAJRP5aXi1CaQHPyVtBZaA8NRGhFV9pO1uOkQGBkKNZeIYdeM1xYZq')">Effectif</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316618883398107136/Q9gbCMO4Ifj9x96MEO7Hj7KJmivfzdhhRyX-S_7slmFwJBNM2t4rMKTr6SGN8ZF3Gx-x')">Numéros</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316758090644983829/rTMDg-CwBu94E9f9Izc67pc0HUm_4lE2uBd8IngLd4DuosI_y4p1lijNCs1b5BDXgfww')">Info Civils</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316758676966604810/Bj4jNcL0MFgGEHvXCP1mt5edvX5mg6N0tR-SUUN6vJRsVZcHIGK4zGRl09rf1-77iSNO')">Info Groupe</button>
+        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316759379848204310/1NQub-t7PJBR3rzJ_UEYp_67KJQO_fAE-szy-YtFfHSXluE6wkQD8vlJkCSoSDItcY4c')">Drogues</button>
+      </div>
+    </div>
+    <button onclick="closeTablet()">Fermer</button>
+  </div>
+
+  <div class="message-popup" id="messagePopup">
+    <h3>Envoyer un message</h3>
+    <textarea id="messageContent" placeholder="Votre message ici..."></textarea>
+    <button onclick="sendMessage()">Envoyer</button>
+    <button onclick="closeMessagePopup()">Annuler</button>
+  </div>
+
+  <script>
+    let currentWebhook = "";
+
+    document.getElementById("openTablet").addEventListener("click", () => {
+      document.getElementById("tablet").style.display = "block";
+    });
+
+    function closeTablet() {
+      document.getElementById("tablet").style.display = "none";
+    }
+
+    function openMessagePopup(webhook) {
+      currentWebhook = webhook;
+      document.getElementById("messagePopup").style.display = "block";
+    }
+
+    function closeMessagePopup() {
+      document.getElementById("messagePopup").style.display = "none";
+    }
+
+    async function sendMessage() {
+      const message = document.getElementById("messageContent").value;
+      if (!message) return alert("Message vide !");
+      try {
+        await fetch(currentWebhook, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: message }),
+        });
+        alert("Message envoyé !");
+      } catch (error) {
+        alert("Erreur lors de l'envoi du message !");
+      }
+      closeMessagePopup();
+    }
+  </script>
+</body>
+</html>

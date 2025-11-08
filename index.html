@@ -1,173 +1,462 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>410'TH</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BROWN KING MONEY - Message Custom</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: black;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
+    /* --- Palette & reset --- */
+    :root{
+      --bg:#080808;
+      --panel:#121214;
+      --muted:#1e1e1f;
+      --accent:#ff2b2b;
+      --white:#f7f7f7;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
     }
-    h1 {
-      position: absolute;
-      top: 20px;
-      text-align: center;
-      font-size: 3em;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, "Poppins", system-ui, Arial, sans-serif;background:linear-gradient(180deg,#070707 0%, #0b0b0b 100%);color:var(--white)}
+    a{color:inherit}
+    .center {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:36px;
+      flex-direction:column;
+      gap:28px;
     }
-    button {
-      padding: 15px 30px;
-      font-size: 1.2em;
-      cursor: pointer;
+
+    /* --- Header / logo / title --- */
+    header{
+      position:absolute;
+      top:24px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-align:center;
+    }
+    header img{ width:72px; height:72px; object-fit:cover; border-radius:10px; box-shadow:0 6px 28px rgba(255,43,43,0.12); }
+    header h1{
+      margin:0;
+      font-weight:700;
+      letter-spacing:6px;
+      font-family: "Times New Roman", serif;
+      font-size:20px;
+      color:var(--white);
+      text-shadow: 0 0 18px rgba(255,43,43,0.12);
+    }
+
+    /* --- Big central card --- */
+    .card {
+      width:100%;
+      max-width:980px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:42px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      transform: translateY(0);
+      transition: transform .35s ease;
+    }
+    .card:hover{ transform: translateY(-6px); }
+
+    .headline {
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-direction:column;
+    }
+    .headline h2{
+      margin:0;
+      font-size:36px;
+      line-height:1;
+      letter-spacing:6px;
+      color:var(--white);
+      text-shadow: 0 2px 30px rgba(255,43,43,0.12);
+      font-family: "Times New Roman", serif;
+      font-weight:700;
+    }
+    .headline p{
+      margin:0;
+      color:#dcdcdc;
+      opacity:0.9;
+    }
+
+    /* --- Message Custom button --- */
+    #openCategories{
+      margin-top:18px;
+      background: linear-gradient(180deg, #ff3b3b, #d71e1e);
       border: none;
-      border-radius: 5px;
-      background-color: #333;
       color: white;
+      padding:16px 34px;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 10px 40px rgba(215,30,30,0.22);
+      transition: transform .12s ease, box-shadow .12s ease;
     }
-    .tablet {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 600px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    #openCategories:active{ transform: translateY(2px) }
+    #openCategories:hover{ box-shadow: 0 18px 60px rgba(215,30,30,0.28) }
+
+    /* --- small helper text --- */
+    .muted{ color:#bfbfbf; font-size:13px }
+
+    /* --- Modal overlay (categories) --- */
+    .overlay {
+      position:fixed; inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.75));
+      z-index:120;
+      padding:20px;
+      animation: fadeIn .18s ease both;
     }
-    .tablet h2 {
-      margin-top: 0;
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+    .modal-card{
+      width:100%;
+      max-width:820px;
+      background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(12,12,12,0.98));
+      border-radius: var(--radius);
+      padding:20px 22px;
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.7), 0 0 40px rgba(255,43,43,0.03) inset;
+      transform: translateY(12px) scale(.995);
+      animation: popIn .18s cubic-bezier(.2,.9,.3,1) both;
     }
-    .categories {
-      margin-top: 20px;
+    @keyframes popIn { from { opacity:0; transform: translateY(20px) scale(.98) } to { opacity:1; transform: translateY(0) scale(1) } }
+
+    .modal-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px }
+    .modal-header h3{ margin:0; color:var(--white) }
+    .close-x{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:#eee; padding:8px 12px; border-radius:10px; cursor:pointer }
+
+    /* --- category groups & buttons --- */
+    .group {
+      margin-top:10px;
+      text-align:left;
     }
-    .category {
-      margin-bottom: 20px;
+    .group strong { color:var(--accent); display:block; margin-bottom:10px; font-size:14px }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
     }
-    .category h3 {
-      margin: 0 0 10px 0;
+    .chip {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      color:var(--white);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      min-width:120px;
+      text-align:center;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      font-weight:600;
     }
-    .category button {
-      margin: 5px;
+    .chip:hover{
+      transform: translateY(-4px);
+      background: linear-gradient(180deg, rgba(255,43,43,0.12), rgba(255,43,43,0.06));
+      box-shadow: 0 10px 30px rgba(255,43,43,0.08);
     }
-    .message-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #333;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      width: 90%;
-      max-width: 400px;
+
+    /* --- message modal (secondary) --- */
+    .message-card{
+      width:100%;
+      max-width:520px;
+      background: linear-gradient(180deg, rgba(20,20,20,0.98), rgba(12,12,12,0.98));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      transform: translateY(12px);
+      animation: popIn .16s ease both;
     }
-    .message-popup textarea {
-      width: 100%;
-      height: 100px;
-      margin-bottom: 10px;
-      background-color: #222;
-      color: white;
-      border: 1px solid #555;
-      border-radius: 5px;
-      padding: 10px;
+    .message-card h4{ margin:0 0 8px 0; color:var(--white) }
+    .meta-target{ color:#d8d8d8; font-size:13px; margin-bottom:8px }
+
+    textarea{
+      width:100%;
+      min-height:120px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:12px;
+      color:var(--white);
+      border-radius:8px;
+      resize:vertical;
+      font-size:14px;
+      font-family:inherit;
     }
-    .message-popup button {
-      width: 48%;
-      margin: 1%;
+
+    .row { display:flex; gap:10px; margin-top:12px; align-items:center; justify-content:space-between }
+    .btn {
+      padding:10px 14px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn-send {
+      background: linear-gradient(180deg, var(--accent), #c21717);
+      color:white;
+      box-shadow: 0 12px 40px rgba(200,30,30,0.18);
+    }
+    .btn-cancel {
+      background: rgba(255,255,255,0.03);
+      color:#eaeaea;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .status { font-size:13px; color:#dcdcdc; opacity:0.9; margin-left:8px }
+
+    /* responsive */
+    @media (max-width:700px){
+      .chip{ min-width:100px; padding:10px 12px }
+      .headline h2{ font-size:28px }
+      header img{ width:56px;height:56px }
     }
   </style>
 </head>
 <body>
-  <h1>410'TH</h1>
-  <button id="openTablet">MessageCustom</button>
+  <!-- Header with logo -->
+  <header>
+    <h1>𝐁𝐑𝐎𝐖𝐍 𝐊𝐈𝐍𝐆 𝐌𝐎𝐍𝐄𝐘</h1>
+  </header>
 
-  <div class="tablet" id="tablet">
-    <h2>410'TH - Catégories</h2>
-    <div class="categories">
-      <div class="category">
-        <h3>410'TH Recrutement</h3>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316611103077171372/-cs5xFkREYxQfpZGWkUUz3nxnwMeqriMdn9hsEH9RUzA9iEOmUoMCP4UpEs9nR13T-h7')">Information</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316615609051648052/iv0VB1Npb7F98xoNZuHgWJHQ4G4DMRd7Bswuz9hXmiPHfAOSW5tAbczZw5qKcvnkWUmB')">Annonce RC</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318340792959369216/pSp4dLhdtqfdkND5wp5tbKVkc4Bb9esnnMiGtO5Ekee2HEEOV7wS4Z1C6TnIn96lq98b')">Dossier</button>
+  <main class="center">
+    <div class="card">
+      <div class="headline">
+        <h2>BKM — Système de message</h2>
+        <p class="muted">Clique sur "Message Custom" pour ouvrir les catégories, puis choisis une catégorie pour envoyer ton message.</p>
       </div>
-      <div class="category">
-        <h3>410'TH Privée</h3>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318340950845821029/UXpe56c4Ur5mdKFtQiWlWSNoH1lVfiIKvO3aahPgZHcN7j_oXdexl8RicQNH_slLK8AX')">Annonce 410</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316755580387590144/pbz-wPn-ab9y7X2ef2_UgGMdWnnelvdMYbQi-lhKXxQP0nIEWAqobo-2cGm2q7zEEjKU')">Présence</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341148812640387/Mqt0fdJd2LCBGo9r6p2x29_BOAryusk9t0Wv7AdMv_murhlboLOn5W3tWtZDlNkvt2a1')">Warning</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341291523702824/LrFJ5U5yzLnobvemSDuulLe0fiau60VG8lfsfLVhPVFd5pqRLzAsqwaTd7KRpkxGFj1m')">Media 410</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1318341414131859537/D20ETWhiudidycU4H3P31TU2RNAD8fNkec5pJp14MhsmMCp2b9Rq27QreXtAa6K4YwNu')">Discu 410</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316619622098931732/_UTyJl-YovYFDGuIAxRmJIrzX2odxduaBNS52AalGYWLrrFxWHDo5qbmmJiqi6xMrHNZ')">Radio 410</button>
-      </div>
-      <div class="category">
-        <h3>410'TH Privée 2</h3>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316756948988989540/0Afg5nc1oG1RjxCAJRP5aXi1CaQHPyVtBZaA8NRGhFV9pO1uOkQGBkKNZeIYdeM1xYZq')">Effectif</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316618883398107136/Q9gbCMO4Ifj9x96MEO7Hj7KJmivfzdhhRyX-S_7slmFwJBNM2t4rMKTr6SGN8ZF3Gx-x')">Numéros</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316758090644983829/rTMDg-CwBu94E9f9Izc67pc0HUm_4lE2uBd8IngLd4DuosI_y4p1lijNCs1b5BDXgfww')">Info Civils</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316758676966604810/Bj4jNcL0MFgGEHvXCP1mt5edvX5mg6N0tR-SUUN6vJRsVZcHIGK4zGRl09rf1-77iSNO')">Info Groupe</button>
-        <button onclick="openMessagePopup('https://discord.com/api/webhooks/1316759379848204310/1NQub-t7PJBR3rzJ_UEYp_67KJQO_fAE-szy-YtFfHSXluE6wkQD8vlJkCSoSDItcY4c')">Drogues</button>
-      </div>
+
+      <button id="openCategories">Message Custom</button>
+      <div class="muted">Thème : noir · rouge · blanc</div>
     </div>
-    <button onclick="closeTablet()">Fermer</button>
+  </main>
+
+  <!-- Overlay 1: catégories (petite fenêtre avec tous les boutons) -->
+  <div class="overlay" id="categoriesOverlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="catTitle">
+      <div class="modal-header">
+        <h3 id="catTitle">BKM - Catégories</h3>
+        <div>
+          <button class="close-x" id="closeCategories">Fermer</button>
+        </div>
+      </div>
+
+      <!-- BKM Recrutement -->
+      <div class="group">
+        <strong>BKM Recrutement</strong>
+        <div class="chips">
+          <button class="chip cat-btn" data-key="Info RC">Info RC</button>
+          <button class="chip cat-btn" data-key="Discussion RC">Discussion RC</button>
+          <button class="chip cat-btn" data-key="Ticket">Ticket</button>
+        </div>
+      </div>
+
+      <!-- BKM Privée Annonces -->
+      <div class="group">
+        <strong>BKM Privée Annonces</strong>
+        <div class="chips">
+          <button class="chip cat-btn" data-key="Annonces BKM">Annonces BKM</button>
+          <button class="chip cat-btn" data-key="Opération">Opération</button>
+          <button class="chip cat-btn" data-key="Radio">Radio</button>
+          <button class="chip cat-btn" data-key="Montées">Montées</button>
+          <button class="chip cat-btn" data-key="Avertissements">Avertissements</button>
+          <button class="chip cat-btn" data-key="Remarques">Remarques</button>
+        </div>
+      </div>
+
+      <!-- BKM Privée -->
+      <div class="group">
+        <strong>BKM Privée</strong>
+        <div class="chips">
+          <button class="chip cat-btn" data-key="Discussion">Discussion</button>
+          <button class="chip cat-btn" data-key="Médias">Médias</button>
+          <button class="chip cat-btn" data-key="Suggestions">Suggestions</button>
+          <button class="chip cat-btn" data-key="Tenue">Tenue</button>
+          <button class="chip cat-btn" data-key="Sondage">Sondage</button>
+          <button class="chip cat-btn" data-key="Absence">Absence</button>
+          <button class="chip cat-btn" data-key="Grades">Grades</button>
+          <button class="chip cat-btn" data-key="QG">QG</button>
+          <button class="chip cat-btn" data-key="Contact">Contact</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="message-popup" id="messagePopup">
-    <h3>Envoyer un message</h3>
-    <textarea id="messageContent" placeholder="Votre message ici..."></textarea>
-    <button onclick="sendMessage()">Envoyer</button>
-    <button onclick="closeMessagePopup()">Annuler</button>
+  <!-- Overlay 2: message (écrire & envoyer) -->
+  <div class="overlay" id="messageOverlay" aria-hidden="true">
+    <div class="message-card" role="dialog" aria-modal="true" aria-labelledby="msgTitle">
+      <h4 id="msgTitle">Envoyer un message</h4>
+      <div class="meta-target" id="targetLabel">Vers : —</div>
+      <textarea id="messageInput" placeholder="Votre message ici..."></textarea>
+      <div class="row">
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn btn-send" id="sendBtn">Envoyer</button>
+          <button class="btn btn-cancel" id="cancelBtn">Annuler</button>
+        </div>
+        <div class="status" id="status">Prêt</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    let currentWebhook = "";
+    /* -------------------------
+       Mapping catégories -> webhooks (défini par toi)
+       J'ai rempli avec les liens que tu as fournis.
+       ------------------------- */
+    const WEBHOOKS = {
+      "Info RC": "https://discordapp.com/api/webhooks/1436754532217520322/xKq97jvE2RlYsLBubyiC1cATBMtt-lptucB0YDhdFhASO3Ht3i1T8Dy1huiVv8hf0p5J",
+      "Discussion RC": "https://discordapp.com/api/webhooks/1436755751958872205/2v_rutlTuDn0LhZOzWtWabkf4MrGK9w9cvpTxZNwR-Sh-PdErXDyrpvQeeNwKEXvganl",
+      "Ticket": "https://discordapp.com/api/webhooks/1436755825631957012/WHABIBOxZU3Nm6VjyDH8usI7aaZmDId46xZHaMAktpMPV8GwwMKR9teuftJst5wKPrTo",
+      "Annonces BKM": "https://discordapp.com/api/webhooks/1436755989125923060/rSwdf3QV7fU54hWsFecr_CHuBlcBVNJbFAr4jlFra2NQ1fxf7sCCol6pvu8c-yGAYq4t",
+      "Opération": "https://discordapp.com/api/webhooks/1436756061506764971/yMW6P1IoTRfbgXvUBlmnNwEGlY0hYViDIrnycq-vEef8d7DLotZ_ccJjtLb02VZ_X6jP",
+      "Radio": "https://discordapp.com/api/webhooks/1436756126262628436/9ZvpwH4jMpKkQqE55SN_qhy2kxcZMCJR3SVpYgDSUgk_JC775TKC8jyFuthQ32cYABsC",
+      "Montées": "https://discordapp.com/api/webhooks/1436756221909536798/BBYoqQt5FftxUa2xXnROSjtCUP0X11qlws5_kG36_itabURQeXNmcYfHNvw9DESPNZo7",
+      "Avertissements": "https://discordapp.com/api/webhooks/1436756283985232026/x3mry9qz9VDgTODCoxBFe4X4oD3oEFqGmsRP3s9nH2-LEHD7sCAn6zdooWlH9K9YEdWp",
+      "Remarques": "https://discordapp.com/api/webhooks/1436756343846338591/VOSouAH0xspH7j941xCnavV0bAnpHWZQndTMkkymmothExTViWY9UVE67ocO5pQBuXTO",
+      "Discussion": "https://discordapp.com/api/webhooks/1436756462071320800/iLzsFIydrvoSzug0CqJlkYAaqx1uhl2jFZuVNIwQ5ocZ1Ub4lUlgrrm7Liyi7v9PrDTP",
+      "Médias": "https://discordapp.com/api/webhooks/1436756493885247520/_Kij9_BZiH-PIj9xle6oBRVS2Q0-IeoyE_wmX_V3wJ9MKnRkhlXZ_Pol5O9-OrwKD-As",
+      "Suggestions": "https://discordapp.com/api/webhooks/1436756546653651014/qz03nN3KmC3Y_5hk4tzQmChZ71hLs4SooEBNKt7Hx2GOO2K28c08mC_IUAPiYUXsCLYv",
+      "Tenue": "https://discordapp.com/api/webhooks/1436756591616589924/39CivyEMqVQPpKCPdL0afWG8n63BnR2_M5Eewvs8mr2XMI2jGuy-9capFt3bKrIYekOH",
+      "Sondage": "https://discordapp.com/api/webhooks/1436756648822837359/MVxjttO4a14UNi0alchwKKhJd6DJPUTh8TN2zbOzsIPL1opcUD_DV5J2aOxhRaecQcQf",
+      "Absence": "https://discordapp.com/api/webhooks/1436756698797838356/0Xt8yeWjeZ0uGEvJYd_dhFffCj0JIZDmWZc85McE7VryP9I-ZJ4-Q0hrHH_5cqHa0tdT",
+      "Grades": "https://discordapp.com/api/webhooks/1436756748383027351/VBC74rUtYLTeMMWGjUwdmoxNWLoT9qdnXzx3w6VISoNRQG8TVLkBTwwDcoOH-wA9OuIV",
+      "QG": "https://discordapp.com/api/webhooks/1436756797313519636/TbdbnA_c6Hk5EPU1jE1Qkd_MPYLIN7liIcSl0f5e_jOVC7kcQ1GDS70Lr5EqMia21qDg",
+      "Contact": "https://discordapp.com/api/webhooks/1436756888808325161/G8TYBhB_GLdq6-4yt6xzma8KBnrOrNoRMDSM6LxcZ-U-hGAToXEKAfCI_A1VFBvMDbCc"
+    };
 
-    document.getElementById("openTablet").addEventListener("click", () => {
-      document.getElementById("tablet").style.display = "block";
+    /* -------------------------
+       Gestion UI & interactions
+       ------------------------- */
+    const openCategoriesBtn = document.getElementById('openCategories');
+    const categoriesOverlay = document.getElementById('categoriesOverlay');
+    const closeCategoriesBtn = document.getElementById('closeCategories');
+    const catButtons = document.querySelectorAll('.cat-btn');
+
+    const messageOverlay = document.getElementById('messageOverlay');
+    const targetLabel = document.getElementById('targetLabel');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const status = document.getElementById('status');
+
+    let currentKey = null;
+
+    // open main categories modal
+    openCategoriesBtn.addEventListener('click', () => {
+      categoriesOverlay.style.display = 'flex';
+      categoriesOverlay.setAttribute('aria-hidden', 'false');
+    });
+    closeCategoriesBtn.addEventListener('click', () => {
+      categoriesOverlay.style.display = 'none';
+      categoriesOverlay.setAttribute('aria-hidden', 'true');
     });
 
-    function closeTablet() {
-      document.getElementById("tablet").style.display = "none";
-    }
+    // when a category is clicked, open message overlay
+    catButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentKey = btn.dataset.key;
+        // update UI
+        targetLabel.textContent = `Vers : ${currentKey}`;
+        messageInput.value = '';
+        status.textContent = 'Prêt';
+        // open message modal and hide categories
+        categoriesOverlay.style.display = 'none';
+        categoriesOverlay.setAttribute('aria-hidden', 'true');
+        messageOverlay.style.display = 'flex';
+        messageOverlay.setAttribute('aria-hidden', 'false');
+        // focus textarea
+        setTimeout(()=> messageInput.focus(), 80);
+      });
+    });
 
-    function openMessagePopup(webhook) {
-      currentWebhook = webhook;
-      document.getElementById("messagePopup").style.display = "block";
-    }
+    // cancel message
+    cancelBtn.addEventListener('click', () => {
+      messageOverlay.style.display = 'none';
+      messageOverlay.setAttribute('aria-hidden', 'true');
+      // go back to categories
+      categoriesOverlay.style.display = 'flex';
+      categoriesOverlay.setAttribute('aria-hidden', 'false');
+    });
 
-    function closeMessagePopup() {
-      document.getElementById("messagePopup").style.display = "none";
-    }
-
-    async function sendMessage() {
-      const message = document.getElementById("messageContent").value;
-      if (!message) return alert("Message vide !");
-      try {
-        await fetch(currentWebhook, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ content: message }),
-        });
-        alert("Message envoyé !");
-      } catch (error) {
-        alert("Erreur lors de l'envoi du message !");
+    // send handler
+    sendBtn.addEventListener('click', async () => {
+      const content = messageInput.value.trim();
+      if(!content){
+        status.textContent = 'Écris quelque chose avant d\'envoyer.';
+        return;
       }
-      closeMessagePopup();
-    }
+      if(!currentKey || !WEBHOOKS[currentKey]){
+        status.textContent = 'Webhook manquant pour cette catégorie.';
+        return;
+      }
+      status.textContent = 'Envoi en cours...';
+      sendBtn.disabled = true;
+      try {
+        const res = await fetch(WEBHOOKS[currentKey], {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        });
+        if(res.ok){
+          status.textContent = 'Message envoyé ✅';
+          // fermer et retourner au main après un court délai
+          setTimeout(()=>{
+            messageOverlay.style.display = 'none';
+            messageOverlay.setAttribute('aria-hidden', 'true');
+            sendBtn.disabled = false;
+            // tu peux garder fermé ou retourner au main (ici on ferme tout)
+          }, 900);
+        } else {
+          // probable CORS ou erreur discord
+          status.textContent = `Erreur serveur : ${res.status}`;
+          sendBtn.disabled = false;
+          console.warn('Discord response status:', res.status, await res.text());
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = 'Échec (CORS / réseau). Regarde la console.';
+        sendBtn.disabled = false;
+      }
+    });
+
+    // close overlays by clicking outside content
+    document.querySelectorAll('.overlay').forEach(ov => {
+      ov.addEventListener('click', (e) => {
+        if(e.target === ov){
+          ov.style.display = 'none';
+          ov.setAttribute('aria-hidden', 'true');
+        }
+      });
+    });
+
+    // accessibility: Esc closes overlays
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        if(messageOverlay.style.display === 'flex'){
+          messageOverlay.style.display = 'none';
+          messageOverlay.setAttribute('aria-hidden', 'true');
+          categoriesOverlay.style.display = 'flex';
+          categoriesOverlay.setAttribute('aria-hidden', 'false');
+        } else if(categoriesOverlay.style.display === 'flex'){
+          categoriesOverlay.style.display = 'none';
+          categoriesOverlay.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
   </script>
 </body>
 </html>
